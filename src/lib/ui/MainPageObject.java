@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class MainPageObject {
   protected AppiumDriver driver;
@@ -111,18 +113,20 @@ public class MainPageObject {
     return elements.size();
   }
 
-  /*private void assertElementPresent(By by, String error_message){
-    Assert.assertNotNull(driver.findElement(by));
-    System.out.println(error_message);
-  }*/
-
   public void assertElementPresent(By by, String error_message){
+    int titleElement = driver.findElements(by).size();
+    if(titleElement == 0) {
+      throw new AssertionError(error_message);
+    }
+  }
+
+  /*public void assertElementPresent(By by, String error_message){
     int number_of_elements = getAmountOfElements(by);
     if(number_of_elements == 0){
       String default_message = "An element '" + by.toString() + "' is not present";
       throw new AssertionError(default_message + " " + error_message);
     }
-  }
+  }*/
 
   public void assertElementNotPresent(By by, String error_message){
     int number_of_elements = getAmountOfElements(by);
